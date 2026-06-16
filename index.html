@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UnitZero — Embodied AI Infrastructure</title>
+  <meta name="description" content="Building the infrastructure to capture human movement. Gigascale embodied AI datasets and research into the accelerants.">
+  <meta name="keywords" content="UnitZero, embodied AI, robotics, AI datasets, embodied intelligence, manipulation data">
+  <link rel="canonical" href="index.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="UnitZero — Embodied AI Infrastructure">
+  <meta property="og:description" content="Building the infrastructure to capture human movement. Gigascale embodied AI datasets and research into the accelerants.">
+  <meta property="og:url" content="https://unitzero.ai">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="UnitZero">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="UnitZero — Embodied AI Infrastructure">
+  <meta name="twitter:description" content="Building the infrastructure to capture human movement. Gigascale embodied AI datasets and research into the accelerants.">
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=block" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=block" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f7f4ed;
+      --text: #1a1a1a;
+      --text-bright: #000000;
+      --muted: #999;
+      --rule: #e0e0e0;
+    }
+
+    html {
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', 'SF Mono', 'Consolas', monospace;
+      font-weight: 400;
+      line-height: 1.85;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @keyframes logo-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    #topo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.04;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    nav, main {
+      position: relative;
+      z-index: 1;
+    }
+
+    nav {
+      padding: 3rem 0 0;
+      margin-bottom: 3rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-height: 2.8rem;
+    }
+
+    .logo svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .logo-text {
+      font-weight: 500;
+      font-size: 1.6rem;
+      letter-spacing: 0.03em;
+      color: var(--text-bright);
+    }
+
+    .logo .cursor {
+      display: inline-block;
+      width: 0.6em;
+      height: 1.15em;
+      background: var(--text-bright);
+      vertical-align: baseline;
+      margin-left: 2px;
+      position: relative;
+      top: 0.18em;
+      animation: blink 0.7s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .section {
+      margin-bottom: 2.8rem;
+    }
+
+    .section-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .section-label::before {
+      content: '// ';
+    }
+
+    .section-text {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .section-text + .section-text {
+      margin-top: 1rem;
+    }
+
+    .section-text strong {
+      font-weight: 500;
+      color: var(--text-bright);
+    }
+
+    .section-text a {
+      color: var(--text-bright);
+      text-decoration: none;
+    }
+
+    .section-text a:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 2.8rem 0;
+    }
+
+    .animated {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .animated.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 2rem 0 0; margin-bottom: 2rem; }
+      .section { margin-bottom: 2rem; }
+      .container { padding: 0 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="topo"></canvas>
+
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <img src="logo-cropped.jpg" alt="UnitZero logo" style="height:2rem;width:auto;">
+        <span class="logo-text" id="logoType"></span><span class="cursor"></span>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+
+      <section class="section animated">
+        <div class="section-label">Approach</div>
+        <p class="section-text">
+          We study what makes robot training data actually work. We then produce it at a cost and scale no one else can compete with.
+        </p>
+        <p class="section-text">
+          Right now, nobody knows which demonstrations matter, which tasks transfer, or why 1000 hours from one setup outperforms 5000 from another. The relationship between data and capability is still a black box.
+        </p>
+        <p class="section-text">
+          Some questions only answer themselves at scale. You can't discover what makes data work by collecting a little of it carefully. You need volume to run the experiments — ablations across a wide variety of tasks, environments, operators, and embodiments. The study requires the infrastructure.
+        </p>
+        <p class="section-text">
+          We have both. Now we're running the experiments nobody else can.
+        </p>
+      </section>
+
+      <section class="section animated">
+        <div class="section-label">Output</div>
+        <p class="section-text">
+          Gigascale embodied AI datasets shaped by research into what works.
+        </p>
+      </section>
+
+      <section class="section animated">
+        <div class="section-label">Team</div>
+        <p class="section-text">
+          Researchers and engineers from Nvidia, Bridgewater, Draper, SpaceX, and growing.
+        </p>
+      </section>
+
+      <hr class="divider">
+
+      <div>
+        <p class="section-text">
+          We are hiring exceptional researchers. We are also onboarding partners for early dataset access. If interested, email <a href="mailto:info@unitzero.ai">info@unitzero.ai</a>
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <div style="height: 6rem;"></div>
+
+  <script>
+    // --- Simplex noise ---
+    const F2 = 0.5 * (Math.sqrt(3) - 1), G2 = (3 - Math.sqrt(3)) / 6;
+    const perm = new Uint8Array(512);
+    const grad = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+    (function() {
+      const p = new Uint8Array(256);
+      for (let i = 0; i < 256; i++) p[i] = i;
+      for (let i = 255; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; }
+      for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+    })();
+    function noise2D(x, y) {
+      const s = (x + y) * F2, i = Math.floor(x + s), j = Math.floor(y + s);
+      const t = (i + j) * G2, x0 = x - (i - t), y0 = y - (j - t);
+      const i1 = x0 > y0 ? 1 : 0, j1 = x0 > y0 ? 0 : 1;
+      const x1 = x0 - i1 + G2, y1 = y0 - j1 + G2, x2 = x0 - 1 + 2 * G2, y2 = y0 - 1 + 2 * G2;
+      const ii = i & 255, jj = j & 255;
+      let n = 0;
+      let t0 = 0.5 - x0*x0 - y0*y0;
+      if (t0 > 0) { t0 *= t0; const g = grad[perm[ii + perm[jj]] % 8]; n += t0 * t0 * (g[0]*x0 + g[1]*y0); }
+      let t1 = 0.5 - x1*x1 - y1*y1;
+      if (t1 > 0) { t1 *= t1; const g = grad[perm[ii + i1 + perm[jj + j1]] % 8]; n += t1 * t1 * (g[0]*x1 + g[1]*y1); }
+      let t2 = 0.5 - x2*x2 - y2*y2;
+      if (t2 > 0) { t2 *= t2; const g = grad[perm[ii + 1 + perm[jj + 1]] % 8]; n += t2 * t2 * (g[0]*x2 + g[1]*y2); }
+      return 70 * n;
+    }
+
+    // --- Topographic contour lines ---
+    const canvas = document.getElementById('topo');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      w = window.innerWidth; h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const SCALE = 0.003, LEVELS = 10, SPEED = 0.00004;
+
+    function drawTopo(time) {
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = '#ccc';
+      ctx.lineWidth = 0.4;
+      const step = 5;
+      const cols = Math.ceil(w / step) + 1, rows = Math.ceil(h / step) + 1;
+      const field = new Float32Array(cols * rows);
+      for (let r = 0; r < rows; r++)
+        for (let c = 0; c < cols; c++)
+          field[r * cols + c] = noise2D(c * step * SCALE + time * 0.3, r * step * SCALE + time * 0.2);
+      for (let lv = 0; lv < LEVELS; lv++) {
+        const threshold = -1 + (2 / LEVELS) * (lv + 0.5);
+        ctx.beginPath();
+        for (let r = 0; r < rows - 1; r++) {
+          for (let c = 0; c < cols - 1; c++) {
+            const idx = r * cols + c;
+            const v0 = field[idx], v1 = field[idx + 1], v2 = field[idx + cols + 1], v3 = field[idx + cols];
+            const b = ((v0 >= threshold) ? 8 : 0) | ((v1 >= threshold) ? 4 : 0) | ((v2 >= threshold) ? 2 : 0) | ((v3 >= threshold) ? 1 : 0);
+            if (b === 0 || b === 15) continue;
+            const x = c * step, y = r * step;
+            const lerp = (a, bv) => (threshold - a) / (bv - a);
+            const top = [x + lerp(v0, v1) * step, y];
+            const right = [x + step, y + lerp(v1, v2) * step];
+            const bottom = [x + lerp(v3, v2) * step, y + step];
+            const left = [x, y + lerp(v0, v3) * step];
+            const segs = [];
+            switch(b) {
+              case 1: case 14: segs.push(left, bottom); break;
+              case 2: case 13: segs.push(bottom, right); break;
+              case 3: case 12: segs.push(left, right); break;
+              case 4: case 11: segs.push(top, right); break;
+              case 5: segs.push(top, right, left, bottom); break;
+              case 6: case 9: segs.push(top, bottom); break;
+              case 7: case 8: segs.push(top, left); break;
+              case 10: segs.push(top, left, bottom, right); break;
+            }
+            for (let s = 0; s < segs.length; s += 2) {
+              ctx.moveTo(segs[s][0], segs[s][1]);
+              ctx.lineTo(segs[s+1][0], segs[s+1][1]);
+            }
+          }
+        }
+        ctx.stroke();
+      }
+    }
+
+    let start = null;
+    function animate(ts) {
+      if (!start) start = ts;
+      drawTopo((ts - start) * SPEED);
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    // --- Typewriter for logo ---
+    (function() {
+      const el = document.getElementById('logoType');
+      const text = 'UnitZero';
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          el.textContent += text[i];
+          i++;
+          setTimeout(type, 90 + Math.random() * 60);
+        }
+      }
+      document.fonts.ready.then(() => setTimeout(type, 200));
+    })();
+
+    // --- Scroll animations ---
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.animated').forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.12) + 's';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
